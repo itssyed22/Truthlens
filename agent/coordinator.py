@@ -7,6 +7,9 @@ from langchain.agents import create_react_agent, AgentExecutor
 from langchain_core.prompts import PromptTemplate
 from tools.search_tool import search_news
 
+from langgraph.prebuilt import create_react_agent
+from langchain.agents import AgentExecutor # If you still need the executor wrapper
+
 # Try to load local .env, but don't crash if it's missing (e.g., in the cloud)
 load_dotenv() 
 
