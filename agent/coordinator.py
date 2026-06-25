@@ -1,16 +1,24 @@
 import os
+import streamlit as st
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 # 1. Imports from langchain_classic for the ReAct architecture
-from langchain_classic.agents import create_react_agent, AgentExecutor
-# 2. Imports from langchain_core for the base components
+from langchain.agents import create_react_agent, AgentExecutor
 from langchain_core.prompts import PromptTemplate
 from tools.search_tool import search_news
 
-load_dotenv()
+# Try to load local .env, but don't crash if it's missing (e.g., in the cloud)
+load_dotenv() 
 
-# Initialize LLM
-llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0)
+# This safely gets the key from local environment OR Streamlit Secrets
+GROQ_API_KEY = os.getenv("GROQ_API_KEY") or st.secrets.get("GROQ_API_KEY")
+
+# Pass the key to the ChatGroq model
+llm = ChatGroq(
+    model="llama-3.3-70b-versatile", 
+    temperature=0, 
+    api_key=GROQ_API_KEY
+)
 
 # Define the Prompt Template
 template = """
